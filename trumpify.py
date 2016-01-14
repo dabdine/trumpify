@@ -1,4 +1,5 @@
 import re
+import random
 from optparse import OptionParser
 
 def run():
@@ -21,31 +22,32 @@ def trump_encode(encode_text):
       if c == ' ':
          print(' china', end='')
       elif c.isalpha():
-         c = 'chii%sna' % ('i' * (ord(c) - 65)) if c.isupper() else 'CHII%sNA' % ('I' * (ord(c) - 97))
+         china = 'c' if c.islower() else 'C'
+         china = '%shii%sna' % (china, 'i' * (ord(c.upper()) - 65))
+         if c.isupper() and random.randint(1,2) % 2 == 0:
+            china = china.upper()
          if not first:
-            c = ' %s' % c
-
+            china = ' %s' % china 
          first = False
-         print(c, end='')
+         print(china, end='')
       else:
          print(c, end='')
 
 def trump_decode(decode_text):
-   lcexpr = re.compile('^(chii+na)(.*)$')
-   ucexpr = re.compile('^(CHII+NA)(.*)$')
+   expr = re.compile('^(chii+na)(.*)$', re.IGNORECASE)
    for china in decode_text.split():
       if china.lower() == 'china':
          print(' ', end='')
       else:
-         m = lcexpr.search(china)
+         m = expr.search(china)
          if not m:
-            m = ucexpr.search(china)
-            if not m:
-               raise Exception("invalid input: %s" % china) 
+            raise Exception("invalid input: %s" % china) 
 
          # group(1) contins china variant
          # group(2) contains non-space/non-alpha parts
-         print(chr(m.group(1).count('i') - 2 + 65) if m.group(1).count('i') > 0 else chr(m.group(1).count('I') - 2 + 97), end='')
+         ucase = m.group(1)[0].isupper();
+         china = m.group(1).lower();
+         print(chr(china.count('i') - 2 + 65) if ucase else chr(china.count('i') - 2 + 97), end='')
          print(m.group(2), end='')
 
 if (__name__ == '__main__'):
