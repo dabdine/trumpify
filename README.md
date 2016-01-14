@@ -16,6 +16,6 @@ china
 
 End-to-end:
 ```
-python3 trumpify.py -e 'hello' | xargs -I{} python3 trumpify.py -d {}
-hello
+python3 trumpify.py -e 'china' | xargs -I{} python3 trumpify.py -d {}
+china
 ```
