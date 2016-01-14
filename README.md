@@ -19,3 +19,8 @@ End-to-end:
 python3 trumpify.py -e 'china' | xargs -I{} python3 trumpify.py -d {}
 china
 ```
+
+If you're on a mac, vocalize it:
+```
+python3 trumpify.py -e 'china' | say -v Deranged
+```
